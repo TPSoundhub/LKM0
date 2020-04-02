@@ -1,8 +1,8 @@
-# M0Sf-MB-magfield-to-7key-events.py
+# M0Sd-MB-pins-to-7key-events.py
 #-------------------------------
 # Revision 0.3 - 02 apr 2020 - Knud Funch, Soundhub Danmark - LYDKit til undervisningsbrug - Region MidtJylland
 # 
-# - Program that convert magnetic field input to 0-7 keys and send on USB or on radio
+# - Program that convert PIN input to 0-7 keys and send on USB or on radio
 # - Can switch between sending on USB or Radio with long press on both A and B keys.
 # - Pressing both A and B at same time short displays current mode. That is:
 #   - Small square for sending local - sending local activated keys and anything received on radio onto USB
@@ -16,7 +16,7 @@ from microbit import *
 import radio
 
 # 10 char id "0123456789"
-name =       "MB Magkey1"
+name =       "MB 7Key 1 "
 
 last_key_sent = "0"
 key_read_1    = "0"
@@ -44,15 +44,17 @@ def check_mode_shift():
             display.clear()
 
 def read_key():
-    field=compass.get_field_strength()
-    if  field>1400000:  key="7"
-    elif field>700000:  key="6" 
-    elif field>370000:  key="5" 
-    elif field>260000:  key="4"
-    elif field>190000:  key="3"
-    elif field>140000:  key="2" 
-    elif field>110000:  key="1" 
-    else:               key="0"   # low field strenght -> no key   
+    p0 = pin0.is_touched()
+    p1 = pin1.is_touched()
+    p2 = pin2.is_touched()
+    if p0 and p1 and p2:             key="7"
+    if not p0 and p1 and p2:         key="6" 
+    if p0 and not p1 and p2:         key="5" 
+    if not p0 and not p1 and p2:     key="4"
+    if p0 and p1 and not p2:         key="3"
+    if not p0 and p1 and not p2:     key="2" 
+    if p0 and not p1 and not p2:     key="1" 
+    if not p0 and not p1 and not p2: key="0"   # no pins touched -> no key pressed  
     return(key)
 
 def send_streng(k):
@@ -86,4 +88,4 @@ while True:                  # Forever - at least until power off/reset - genera
         if r: print(r)
 #
 # How could M0Sd..  M0Se.. and M0Sf... easily be combined? They do not differ that much do they?
-# 
+#        

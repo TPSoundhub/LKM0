@@ -20,7 +20,7 @@ import radio
 # 10 char id "0123456789"
 name =       "Sender A  "       # Write a unique name - Do keep the lenght to 10 chars.
 
-local_connected = True          # set this to FALSE for sending on radio instead of USB
+local_connected = False         # set this to FALSE for sending on radio instead of USB
 
 def display_current_mode(lc):
     if lc: display.show(Image.SQUARE_SMALL)
